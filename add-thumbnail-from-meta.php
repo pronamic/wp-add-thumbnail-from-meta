@@ -31,14 +31,12 @@ function add_thumbnail_from_meta() {
 	if ( ! empty( $url ) ) {
 		$response = wp_remote_get( $url );
 
-		if ( is_wp_error( $response ) ) {
-			// nothing to do
-		} else {
+		if ( wp_remote_retrieve_response_code( $response ) == 200 ) {
 			$url_path = parse_url( $url, PHP_URL_PATH );
 
 			$file_name = basename( $url_path );
 			
-			$bits = $response['body'];
+			$bits = wp_remote_retrieve_response_message( $response );
 			
 			$date = new DateTime( $post->post_date );
 
